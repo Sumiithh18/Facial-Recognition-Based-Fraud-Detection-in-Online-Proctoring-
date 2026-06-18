@@ -1,145 +1,195 @@
-Fraud detection using facial recognition in online proctoring
+# ProctorGuard — Fraud Detection Using Facial Recognition
 
-ABSTRACT:
-Online examinations play a pivotal role in the realm of e-learning, having witnessed substantial growth in recent
-times. However, the pervasive issue of cheating in online exams remains a global concern, transcending
-developmental disparities. In response to this challenge, this paper introduces an innovative and robust face
-liveness detection method aimed at discerning between authentic and fraudulent users, with a specific emphasis
-on the identification of spoof attacks. The proposed system leverages the light reflection concept to effectively
-distinguish between a genuine facial image and a photograph. This discrimination is especially crucial during
-moments when examinees are recording videos or capturing images during examinations. The face detection
-component of the system is implemented through the application of the Haar cascade technique, while Support
-Vector Machines (SVM) are deployed for the purpose of face recognition. To enhance the overall accuracy of the
-system, the Local Binary Pattern (LBP) filter technique is incorporated, specifically targeting the detection of light
-reflection in images. This multi-faceted approach not only addresses the current challenges associated with online
-exam integrity but also contributes to the advancement of face fraud detection methodologies in
-educational technology.
-INTRODUCTION
-In the rapidly evolving landscape of education, online examinations have emerged as a pivotal component of e-
-learning, witnessing unprecedented growth. The advent of online assessment platforms provides flexibility and
-accessibility, especially in the face of global challenges like the COVID-19 pandemic. However, this convenience
-brings forth a critical issue—cheating in online exams has become a pervasive concern worldwide, transcending
-geographical and developmental boundaries.
+A full-stack online exam fraud detection system implementing:
+- **Haar Cascade** face detection (OpenCV)
+- **LBP (Local Binary Patterns)** texture feature extraction
+- **SVM (Support Vector Machine)** for face liveness and recognition
+- **Light reflection analysis** for photo/screen spoof detection
+- **React UI** with real-time webcam monitoring
 
-The essence of remote examination processes lies in their feasibility, making them an attractive option for
-primary, secondary, and higher education levels, particularly during the uncertainties presented by the COVID-19
-situation. Yet, the absence of physical proctors and the remote nature of online exams create an environment
-conducive to malpractice, challenging the authenticity of the results obtained through these assessments.
+---
 
-Traditional methods of ensuring exam integrity, such as on-site invigilation, become impractical in the digital
-realm. As a result, institutions and educators are compelled to explore innovative solutions to mitigate the rising
-tide of cheating during online assessments. In response to this imperative, the presented paper proposes a
-comprehensive and sophisticated face fraud detection system tailored for online exams.
+## Project Structure
 
-Face recognition, a widely adopted biometric approach, emerges as a potential solution to enhance
-authentication processes in online exams. However, the susceptibility of face recognition systems to spoof attacks
-poses a significant limitation. Spoof attacks involve presenting non-real faces, such as photographs, which can
-deceive the system and compromise its integrity.
+```
+proctor_guard/
+├── backend/
+│   ├── app.py               # Flask REST API (main entry point)
+│   ├── face_detector.py     # Haar Cascade face detection
+│   ├── liveness_detector.py # LBP + SVM liveness detection
+│   ├── face_recognizer.py   # SVM face recognition
+│   ├── alert_system.py      # Alert payload generator
+│   ├── requirements.txt
+│   └── models/              # Auto-created; stores trained SVM models
+├── frontend/
+│   ├── public/index.html
+│   ├── src/
+│   │   ├── App.js           # Full React UI
+│   │   └── index.js
+│   └── package.json
+└── README.md
+```
 
-The authors introduce a robust face liveness detection method as a countermeasure to this vulnerability. This
-method aims to discern between legitimate and illegitimate users by honing in on the critical task of identifying
-spoof attacks. By leveraging the light reflection concept, the proposed system distinguishes between a genuine
-facial image and a static photograph. This distinction becomes particularly crucial during the examination, where
-examinees may attempt to manipulate the system by presenting fraudulent images or videos.
+---
 
-The system&#39;s approach integrates advanced techniques, including the Haar cascade for face detection and
-Support Vector Machines (SVM) for face recognition. Additionally, the Local Binary Pattern (LBP) filter technique is
+## Quick Start
 
-Fraud detection using facial recognition in online proctoring
+### 1. Backend Setup
 
-employed to effectively detect light reflection in images, adding an extra layer of sophistication to the fraud
-detection process.
+```bash
+cd backend
 
-As education increasingly relies on digital platforms, securing the integrity of online assessments becomes
-paramount. The authors&#39; innovative approach not only addresses the current challenges associated with online
-exam authenticity but also contributes to the ongoing evolution of face fraud detection methodologies within the
-realm of educational technology. Through this paper, the authors seek to provide a robust and effective solution
-to the pressing issue of cheating in online exams, ultimately fortifying the credibility of online education
-assessments.
-The objectives of the proposed work are as follows:
-To implement the robust face liveness detection system for detection of spoof attacks.
-To differentiation between legitimate and illegitimate examinee during examination.
-To detect the photo image and real face of examinee during an examination.
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate          # Windows: venv\Scripts\activate
 
-Latest Technique used and its Challenge :
-TECHNIQUES (AS FOR 2022):
-3D Facial Recognition:
-Traditional 2D facial recognition can be vulnerable to spoofing attempts using printed photos. 3D facial
-recognition technology uses depth information to create a more accurate representation of the face, making it
-more resistant to such attacks.
-Behavioral Biometrics:
-This involves analyzing the user&#39;s behavioral patterns during the exam, such as typing speed, mouse movements,
-and gaze direction. Deviations from the baseline behavior may trigger alerts for further investigation.
-Multi-Modal Biometrics:
-Combining multiple biometric modalities, such as facial recognition, voice recognition, and fingerprint scanning,
-enhances the overall security of the online proctoring system. It makes it more challenging for fraudsters to
-bypass the authentication process.
-AI-Based Liveness Detection:
-Leveraging artificial intelligence for liveness detection involves analyzing various facial expressions, eye
-movements, and other factors to ensure that the person being monitored is actively participating in the exam and
-not using pre-recorded videos or photos.
+# Install dependencies
+pip install -r requirements.txt
 
-Challenges:
-Spoofing and Presentation Attacks:
-One of the persistent challenges is the ability of fraudsters to use sophisticated methods to spoof facial
-recognition systems. This includes using high-quality photos, videos, or 3D masks to deceive the system.
-User Privacy Concerns:
-Facial recognition raises privacy concerns, and some users may be uncomfortable with the idea of having their
-biometric data collected and stored. Striking a balance between security and privacy is crucial.
+# Start the Flask server
+python app.py
+# → Running on http://localhost:5000
+```
 
-Fraud detection using facial recognition in online proctoring
+### 2. Frontend Setup
 
-Algorithm Bias and Fairness:
-Facial recognition algorithms may exhibit biases, leading to inaccuracies or unfair treatment of certain
-demographic groups. Addressing algorithmic bias is an ongoing challenge in the field of facial recognition.
-Liveness Detection Accuracy:
+```bash
+cd frontend
 
-While AI-based liveness detection has improved, there is still a need for highly accurate methods to differentiate
-between genuine user interactions and sophisticated spoofing attempts.
-Ethical Considerations:
-The use of facial recognition in educational settings raises ethical concerns, including consent, transparency, and
-the potential for misuse. Striking the right balance between security and ethical considerations is a complex
-challenge.
-Adversarial Attacks:
-Adversarial attacks involve attempts to manipulate or deceive the facial recognition system by exploiting
-vulnerabilities in the algorithm. Ongoing research is needed to develop more robust and resilient systems.
-Regulatory Compliance:
-Adhering to evolving data protection and privacy regulations worldwide is an ongoing challenge. Keeping up with
-the legal landscape and ensuring compliance is crucial for the implementation of facial recognition in online
-proctoring.
+# Install Node dependencies
+npm install
 
-PROPOSED SYSTEM
-System Design:
-In face recognition systems, replay attacks where a pre-recorded video of the user is played and a printed
-photograph is placed infront of the camera are the two most common ways to do the fraud while attending the
-examination. The proposed solution helps todetect the fraud that happens in examination and maintain its
-integrity and genuinity of the result in the online examination. Figure1 shows the design of the system
+# Start React dev server
+npm start
+# → Opens http://localhost:3000
+```
 
-The module wise working of the proposed design is given below:
-Image/Video from Live Camera:
-The camera takes a live video and grabs images of examinees attending onlineexamination using a camera with a
-specific time interval. The camera act as a sensor to collect the face biometricfor processing. The frame extraction
-is done from the video and sends it to the application server for matching.
-Face Detection:
-The Haar cascade Classifier is used for face detection from images. The captured image isanalysed to determine
-whether it is real or fake
+---
 
-Image Pre-Processing:
-Image preprocessing techniques such as noise removal, normalization, or RGB to GrayScale Image are applied on
-the detected face, to get fine tune image. The image is converted into Grayscale bytaking the average of each
-pixel RGB.
+## How It Works
 
-Fraud detection using facial recognition in online proctoring
+### Detection Pipeline (per webcam frame)
 
-LBP (Local Binary Patterns Histograms) Feature Extraction:
-The Gabor filters are used for feature extractionfrom an image. These features like Eyes, Nose, and Mouth
-Location provide us the changes in the face due tolight reflection on an image.
-Feature Extraction:
-Recognition of the face is done by using SVM classifier on the LBP facial features. Byrecognizing the face,
-difference between the actual face and the photograph is identified as the images that arecaptured from an
-image or videos tend to have less colour when they are recaptured. The certain colour texture islost when an
-image is captured from another image. Such change is identified by the SVM algorithm.
-Alert Notification:
-The system help us to detect fraud faces using light reflection patterns on a human face usingthe knowledge that
-every object reflects light differently. It Identify Genuine/ Photograph Faces if such facedetected an alert
-notification is send to the admin.
+```
+Webcam Frame
+     │
+     ▼
+[1] Face Detection      ← Haar Cascade (haarcascade_frontalface_default.xml)
+     │  faces[]
+     ▼
+[2] Liveness Detection  ← LBP histogram + light reflection score → SVM
+     │  is_live, score, spoof_type
+     ▼
+[3] Face Recognition    ← Multi-scale LBP features → SVM (after registration)
+     │  identity_match, confidence
+     ▼
+[4] Alert Generation    ← NO_FACE | MULTIPLE_FACES | SPOOF_DETECTED | IDENTITY_MISMATCH
+     │
+     ▼
+   JSON response → React UI
+```
+
+### Liveness Detection Logic
+
+| Signal | Real Face | Photo Spoof | Screen Replay |
+|--------|-----------|-------------|---------------|
+| LBP entropy | High (rich 3D texture) | Low (flat print) | Medium |
+| Local variance | Moderate | Very low | High (pixel flicker) |
+| Bright pixel ratio | Natural | Flat | High (backlit) |
+| SVM decision | LIVE | SPOOF | SPOOF |
+
+**First run:** uses heuristic scoring (no training data needed).  
+**After collecting samples:** train the SVM via the `/api/train` endpoint or by accumulating labelled frames.
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Server health check |
+| POST | `/api/register` | Register a student face |
+| POST | `/api/analyze` | Analyze a webcam frame |
+| GET | `/api/session/<id>` | Retrieve session alert history |
+| GET | `/api/registered_students` | List all registered students |
+
+### POST `/api/analyze` payload
+
+```json
+{
+  "session_id": "abc123",
+  "student_id": "STU001",
+  "image_b64": "data:image/jpeg;base64,..."
+}
+```
+
+### Response
+
+```json
+{
+  "face_detected": true,
+  "face_count": 1,
+  "is_live": true,
+  "liveness_score": 0.82,
+  "identity_match": true,
+  "identity_confidence": 0.91,
+  "spoof_type": null,
+  "alert": null,
+  "annotated_image": "data:image/png;base64,...",
+  "lbp_image": "data:image/png;base64,..."
+}
+```
+
+---
+
+## UI Pages
+
+### Exam Monitor
+- Live webcam feed with real-time frame capture (every 2.5 s)
+- Liveness score bar + identity confidence bar
+- LBP texture visualization (face ROI side-by-side with LBP pattern map)
+- Annotated frame with bounding box (green = LIVE, red = SPOOF)
+- Alert log for the session
+
+### Register Face
+- Capture a reference photo from webcam
+- Register student ID + name → features stored, SVM retrained automatically
+- Lists all registered students
+
+### Alert History
+- Look up any session by ID
+- View every alert with timestamp
+
+---
+
+## Technology Map (Paper → Code)
+
+| Paper component | Implementation |
+|----------------|----------------|
+| Haar Cascade face detection | `face_detector.py` → `cv2.CascadeClassifier` |
+| LBP feature extraction | `liveness_detector.py` → `skimage.feature.local_binary_pattern` |
+| Light reflection analysis | `liveness_detector.py` → `_light_reflection_score()` |
+| SVM face recognition | `face_recognizer.py` → `sklearn.svm.SVC` |
+| Alert notification | `alert_system.py` → JSON alert payloads |
+| Web interface | `frontend/src/App.js` → React |
+
+---
+
+## Requirements
+
+- Python 3.9+
+- Node.js 18+
+- Webcam
+
+---
+
+## Troubleshooting
+
+**"Camera access denied"** — Allow camera in browser settings (localhost is required).
+
+**"Server unreachable"** — Make sure `python app.py` is running before starting the React app.
+
+**Low liveness score on real face** — The heuristic is conservative. Register a few faces and the SVM will calibrate.
+
+**`ModuleNotFoundError: skimage`** — Run `pip install scikit-image` inside your virtualenv.
+
